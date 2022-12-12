@@ -26,7 +26,7 @@ const gameboard = (function() {
             return (true);
             
         }
-        if(gameSelect(4) && gameSelect(4) && gameSelect(5)){
+        if(gameSelect(3) && gameSelect(4) && gameSelect(5)){
             numbers.push(3, 4, 5)
             return (true);
             
@@ -61,7 +61,7 @@ const gameboard = (function() {
                         ele.style.transition = "opacity 0.5s linear";
                         setTimeout(function() {
                             ele.style.opacity = 1;
-                        }, 100);
+                        }, 50);
                     });
                     _gameboard[i] = 'x'
                     console.log(_gameboard)
@@ -74,11 +74,37 @@ const gameboard = (function() {
     
     return {win, numbers}
 
-
 })();
 
 const displayController = (function() {
+    const container = document.querySelector('.container')
+    const intro = document.querySelector('.intro')
     const square = document.querySelectorAll('.square') 
+    const ai = document.querySelector('.ai')
+    const player = document.querySelector('.player')
+
+    ai.addEventListener('click', () => {
+        container.style.display = 'grid'
+        setTimeout(() => {
+            container.style.opacity = '1'
+        }, 1000);
+        intro.style.opacity = '0';
+        setTimeout(() => {
+            intro.style.display = 'none'
+        }, 1000);
+    })
+
+    player.addEventListener('click', () => {
+        container.style.display = 'grid'
+        setTimeout(() => {
+            container.style.opacity = '1'
+        }, 1000);
+        intro.style.opacity = '0';
+        setTimeout(() => {
+            intro.style.display = 'none'
+        }, 1000);
+    })
+
     let design = () => {
         if(gameboard.win() == true){
             gameboard.numbers.forEach(element => {
@@ -87,34 +113,26 @@ const displayController = (function() {
         }
     }
 
+    let squareEffect = () => {
+        square.forEach(element => {
+            element.addEventListener('mousedown', () => {
+                element.style.scale = 0.90;
+                setTimeout(() => {
+                    element.style.scale = 1;
+                }, 125);
+            })
+        })
+    }
+    squareEffect();
+
     return {design}
+
 })();
 
 const playerFactory = function(name){
 
 }
 
-const squareEffect = (function(doc) {
-    const square = doc.querySelectorAll('.square')
-    
-    square.forEach(element => {
-        element.addEventListener('mousedown', () => {
-            element.style.scale = 0.85;
-            setTimeout(() => {
-                element.style.scale = 1;
-            }, 150);
-        })
-        // element.addEventListener('mouseup', () => {
-            
-            
-        // })
-
-
-    });
-
-})(document);
-
-//
 
 
 
