@@ -16,6 +16,7 @@ body{
     transition: 1s ease-in-out  ;
     display:none;
 
+
 }
 
 .header{
@@ -32,7 +33,6 @@ body{
 }
 
 .squares{
-
     display:grid;
     grid-template-columns: repeat(3, 200px);
     grid-template-rows:  repeat(3, 200px);
@@ -72,11 +72,17 @@ svg{
 }
 
 .cover{
+    scale: 0;
+
+}
+
+.active{
+    scale:1.001;
     display:flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    transition: 1s ease-in-out;
+    transition: all 1s ease-in-out;
     font-family: 'Press Start 2P', cursive;
     gap:100px;
     color:white;

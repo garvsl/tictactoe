@@ -3,46 +3,89 @@ const gameboard = (function() {
     let numbers = [];
     const square = document.querySelectorAll('.square')
 
-    let gameSelect = (x) => {
+    let gameSelectX = (x) => {
+        return(_gameboard[x] == 'x')
+    }
+
+    let gameSelectO = (x) => {
         return(_gameboard[x] == 'x')
     }
 
     let win = () => {
-        if(gameSelect(0) && gameSelect(3) && gameSelect(6)){
+        if(gameSelectO(0) && gameSelectO(3) && gameSelectO(6)){
             numbers.push(0, 3, 6)
             return (true);
         }
-        if(gameSelect(1) && gameSelect(4) && gameSelect(7)){
+        if(gameSelectO(1) && gameSelectO(4) && gameSelectO(7)){
             numbers.push(1, 4, 7)
             return (true);
         }
-        if(gameSelect(2) && gameSelect(5) && gameSelect(8)){
+        if(gameSelectO(2) && gameSelectO(5) && gameSelectO(8)){
             numbers.push(2, 5, 8)
             return (true);
         }
         
-        if(gameSelect(0) && gameSelect(1) && gameSelect(2)){
+        if(gameSelectO(0) && gameSelectO(1) && gameSelectO(2)){
             numbers.push(0, 1, 2)
             return (true);
             
         }
-        if(gameSelect(3) && gameSelect(4) && gameSelect(5)){
+        if(gameSelectO(3) && gameSelectO(4) && gameSelectO(5)){
             numbers.push(3, 4, 5)
             return (true);
             
         }
         
-        if(gameSelect(6) && gameSelect(7) && gameSelect(8)){
+        if(gameSelectO(6) && gameSelectO(7) && gameSelectO(8)){
             numbers.push(6, 7, 8)
             return (true);
             
         }
         
-        if(gameSelect(0) && gameSelect(4) && gameSelect(8)){
+        if(gameSelectO(0) && gameSelectO(4) && gameSelectO(8)){
             numbers.push(0, 4, 8)
             return (true);
         }
-        if(gameSelect(2) && gameSelect(4) && gameSelect(6)){
+        if(gameSelectO(2) && gameSelectO(4) && gameSelectO(6)){
+            numbers.push(2, 4, 6)
+            return (true);
+        }
+
+        if(gameSelectX(0) && gameSelectX(3) && gameSelectX(6)){
+            numbers.push(0, 3, 6)
+            return (true);
+        }
+        if(gameSelectX(1) && gameSelectX(4) && gameSelectX(7)){
+            numbers.push(1, 4, 7)
+            return (true);
+        }
+        if(gameSelectX(2) && gameSelectX(5) && gameSelectX(8)){
+            numbers.push(2, 5, 8)
+            return (true);
+        }
+        
+        if(gameSelectX(0) && gameSelectX(1) && gameSelectX(2)){
+            numbers.push(0, 1, 2)
+            return (true);
+            
+        }
+        if(gameSelectX(3) && gameSelectX(4) && gameSelectX(5)){
+            numbers.push(3, 4, 5)
+            return (true);
+            
+        }
+        
+        if(gameSelectX(6) && gameSelectX(7) && gameSelectX(8)){
+            numbers.push(6, 7, 8)
+            return (true);
+            
+        }
+        
+        if(gameSelectX(0) && gameSelectX(4) && gameSelectX(8)){
+            numbers.push(0, 4, 8)
+            return (true);
+        }
+        if(gameSelectX(2) && gameSelectX(4) && gameSelectX(6)){
             numbers.push(2, 4, 6)
             return (true);
         }
@@ -82,6 +125,16 @@ const displayController = (function() {
     const square = document.querySelectorAll('.square') 
     const ai = document.querySelector('.ai')
     const player = document.querySelector('.player')
+    const cover = document.querySelector('.cover')
+
+    setTimeout(function() {
+        cover.classList.add('active')
+    }, 100);
+    setTimeout(function() {
+        cover.style.transition = 0;
+        cover.style.scale = 1;
+    }, 100);
+
 
     ai.addEventListener('click', () => {
         container.style.display = 'grid'
