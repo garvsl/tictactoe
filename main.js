@@ -13,7 +13,7 @@ const gameboard = (function() {
         return(_gameboard[x] == 'o')
     }
 
-    let win = () => {
+    let winO = () => {
         if(gameSelectO(0) && gameSelectO(3) && gameSelectO(6)){
             numbersO.push(0, 3, 6)
             return (true);
@@ -52,9 +52,9 @@ const gameboard = (function() {
             numbersO.push(2, 4, 6)
             return (true);
         }
+    }
 
-        ///////////////
-
+    let winX = () => {
         if(gameSelectX(0) && gameSelectX(3) && gameSelectX(6)){
             numbersX.push(0, 3, 6)
             return (true);
@@ -93,14 +93,17 @@ const gameboard = (function() {
             numbersX.push(2, 4, 6)
             return (true);
         }
-    }   
+    }
+
+        
     let eachSquare = () => {
 
         counter = 1;
         for(let i = 0 ; i < _gameboard.length; i++){
         
             square[i].addEventListener('click', () => {
-                if(_gameboard.length <= 9 && _gameboard[i] != 'x' && counter % 2 != 0){
+
+                if(_gameboard[i] != 'x' && _gameboard[i] != 'o' && counter % 2 != 0){
                     let svg = document.createElement('svg')
                     svg.innerHTML = '<svg width="120px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"/></svg>'
                     square[i].appendChild(svg)
@@ -113,12 +116,9 @@ const gameboard = (function() {
                     });
                     _gameboard[i] = 'x'
                     console.log(_gameboard)
-                    displayController.design();
-                    console.log('x')
                     counter++
-                    
-                }
-                if(_gameboard.length <= 9 && _gameboard[i] != 'x' && counter % 2 == 0 && gametype == 'player'){
+                    displayController.design();
+                }else if(_gameboard[i] != 'o' && _gameboard[i] != 'x' && counter % 2 == 0 && gametype == 'player'){
                     let svg = document.createElement('svg')
                     svg.innerHTML = '<svg width="125px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M224 96C135.6 96 64 167.6 64 256s71.6 160 160 160s160-71.6 160-160s-71.6-160-160-160zM0 256C0 132.3 100.3 32 224 32s224 100.3 224 224s-100.3 224-224 224S0 379.7 0 256z"/></svg>'
                     square[i].appendChild(svg)
@@ -129,19 +129,49 @@ const gameboard = (function() {
                             ele.style.opacity = 1;
                         }, 50);
                     });
-                    console.log('o')
                     _gameboard[i] = 'o'
                     console.log(_gameboard)
-                    displayController.design();
                     counter++
+                    displayController.design();
                     
                 }
+                
+                square.forEach(block => {
+                    if(block.style.pointerEvents == 'none'){
+                        setTimeout(() => {
+                            let svgselect = document.querySelectorAll('svg')
+                            _gameboard = ['', '', '', '', '', '', '', '', ''];
+                            numbersX.length = 0;
+                            numbersO.length = 0;
+                            winO = 'false'
+                            winX = 'false'
+                            svgselect.forEach(svj => {
+                                svj.style.opacity = '0'
+                            });
+                            setTimeout(() => {
+                                svgselect.forEach(svj => {
+                                    svj.remove()
+                                });
+                                square.forEach(sqre => {
+                                    sqre.style.backgroundColor = 'rgba(226, 226, 226, 0.397)'
+                                })
+                            }, 300);
+                            block.style.pointerEvents = 'all'
+                        }, 2000);
+                        
+                    }
+                });
+                
             })
+            
         }
     }
     eachSquare();
+
+
+
     
-    return {win, numbersX, gametype, numbersO}
+    return {winX, winO, numbersX, gametype, numbersO}
 
 })();
 
@@ -190,17 +220,28 @@ const displayController = (function() {
     // })
 
     let design = () => {
-        if(gameboard.win() == true){
+        if(gameboard.winX() == true){
             gameboard.numbersX.forEach(element => {
                 square[element].style.backgroundColor = 'rgba(82, 255, 148, 0.5)'
+                square.forEach(block => {
+                    block.style.pointerEvents = 'none';
+                });
             });
-        }
-        if(gameboard.win() == true){
+        }else if(gameboard.winO() == true){
             gameboard.numbersO.forEach(element => {
                 square[element].style.backgroundColor = 'rgba(82, 255, 148, 0.5)'
+                square.forEach(block => {
+                    block.style.pointerEvents = 'none';
+                });
             });
         }
-    }
+
+
+        
+        }
+
+
+  
 
     let squareEffect = () => {
         square.forEach(element => {
