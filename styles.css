@@ -45,7 +45,7 @@ body{
     background-color: rgba(226, 226, 226, 0.705);
     border-radius: 25px;;
     box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.144);
-    transition: 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     display:flex;
     justify-content: center;
     align-items: center;
