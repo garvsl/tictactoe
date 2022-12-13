@@ -2,7 +2,7 @@ const gameboard = (function() {
     let _gameboard = ['', '', '', '', '', '', '', '', ''];
     let numbersX = [];
     let numbersO = [];
-    let gametype = 'player' ///MANUALLY SET
+    let gametype = ''
     let gameX;
     let gameO; 
 
@@ -123,7 +123,7 @@ const gameboard = (function() {
                     console.log(_gameboard)
                     counter++
                     displayController.design();
-                }else if(_gameboard[i] != 'o' && _gameboard[i] != 'x' && counter % 2 == 0 && gametype == 'player'){
+                }else if(_gameboard[i] != 'o' && _gameboard[i] != 'x' && counter % 2 == 0 && gameboard.gametype == 'player'){
                     let svg = document.createElement('svg')
                     svg.innerHTML = '<svg width="125px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M224 96C135.6 96 64 167.6 64 256s71.6 160 160 160s160-71.6 160-160s-71.6-160-160-160zM0 256C0 132.3 100.3 32 224 32s224 100.3 224 224s-100.3 224-224 224S0 379.7 0 256z"/></svg>'
                     square[i].appendChild(svg)
@@ -296,46 +296,48 @@ const displayController = (function() {
     let scoretitle = document.querySelector('.scoretitle')
     const container = document.querySelector('.container')
     
-    // const intro = document.querySelector('.intro')
-    // const ai = document.querySelector('.ai')
-    // const player = document.querySelector('.player')
-    // const cover = document.querySelector('.cover')
+    const intro = document.querySelector('.intro')
+    const ai = document.querySelector('.ai')
+    const player = document.querySelector('.player')
+    const cover = document.querySelector('.cover')
 
-    // setTimeout(function() {
-    //     cover.classList.add('active')
-    // }, 100);
-    // setTimeout(function() {
-    //     cover.style.transition = 0;
-    //     cover.style.scale = 1;
-    // }, 100);
+    setTimeout(function() {
+        cover.classList.add('active')
+    }, 100);
+    setTimeout(function() {
+        cover.style.opacity = 1;
+        cover.style.scale = 1;
+    }, 100);
 
 
-    // ai.addEventListener('click', () => {
-    //     container.style.display = 'grid'
-    //     setTimeout(() => {
-    //         container.style.opacity = '1'
-    //     }, 1000);
-    //     intro.style.opacity = '0';
-    //     setTimeout(() => {
-    //         intro.style.display = 'none'
-    //     }, 1000);
+    ai.addEventListener('click', () => {
+        container.style.display = 'grid'
+        setTimeout(() => {
+            container.style.opacity = '1'
+        }, 1000);
+        intro.style.opacity = '0';
+        setTimeout(() => {
+            intro.style.display = 'none'
+        }, 1000);
 
-    //     gameboard.gametype = 'ai'
+        gameboard.gametype = 'ai'
         
-    // })
+    })
 
-    // player.addEventListener('click', () => {
-    //     container.style.display = 'grid'
-    //     setTimeout(() => {
-    //         container.style.opacity = '1'
-    //     }, 1000);
-    //     intro.style.opacity = '0';
-    //     setTimeout(() => {
-    //         intro.style.display = 'none'
-    // //     }, 1000);
-    //     gameboard.gametype = 'player'
-        
-    // })
+    player.addEventListener('click', () => {
+        container.style.display = 'grid'
+        setTimeout(() => {
+            container.style.opacity = '1'
+        }, 1000);
+        intro.style.opacity = '0';
+        setTimeout(() => {
+            intro.style.display = 'none'
+        }, 1000);
+        gameboard.gametype = 'player'
+    
+    })
+    
+
     let round = 1;
     let xScore = 0
     let oScore = 0
@@ -352,6 +354,13 @@ const displayController = (function() {
         if(gameboard.winX() == true){
             round++
             if(round > 5){
+                xScore++
+                if(xScore > oScore){
+                    winningtext.textContent = 'Player1 Wins!'
+                }else if(oScore > xScore){
+                    winningtext.textContent = 'Player2 Wins!'
+                }
+                
                 gameboard.gameX = 'win'
                 gameboard.numbersX.forEach(element => {
                     square[element].style.backgroundColor = 'rgba(82, 255, 148, 0.5)'
@@ -364,7 +373,8 @@ const displayController = (function() {
                 round = 1;
                 xScore = 0
                 oScore = 0
-                winningtext.textContent = 'Player1 Wins!'
+
+               
                 squares.style.pointerEvents = 'none'
                 setTimeout(() => {
                     winningscreen.style.opacity = 1;
@@ -410,6 +420,12 @@ const displayController = (function() {
         }else if(gameboard.winO() == true){
             round++
             if(round > 5){
+                xScore++
+                if(xScore > oScore){
+                    winningtext.textContent = 'Player1 Wins!'
+                }else if(oScore > xScore){
+                    winningtext.textContent = 'Player2 Wins!'
+                }
                 gameboard.gameO = 'win'
                 gameboard.numbersO.forEach(element => {
                     square[element].style.backgroundColor = 'rgba(82, 255, 148, 0.5)'
@@ -422,7 +438,7 @@ const displayController = (function() {
                 xScore = 0
                 oScore = 0
                 squares.style.pointerEvents = 'none'
-                winningtext.textContent = 'Player2 Wins!'
+ 
                 setTimeout(() => {
                     winningscreen.style.opacity = 1;
                     winningscreen.style.transform = 'translateX(-50%)translateY(-50%)scale(1)'
@@ -519,3 +535,5 @@ const playerFactory = function(name){
 //opacity for intro when it coems into view
 
 //after that u are done with player then its time for ai    
+
+//u are letting the person who wins last win, not the person with most points
