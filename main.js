@@ -96,7 +96,7 @@ const gameboard = (function() {
     }
 
         
-    let eachSquare = () => {
+    let eachSquare = (() => {
 
         counter = 1;
         for(let i = 0 ; i < _gameboard.length; i++){
@@ -135,16 +135,22 @@ const gameboard = (function() {
                     displayController.design();
                     
                 }
+
                 
-                square.forEach(block => {
+
+                let draw = _gameboard.filter(word => word != '')
+                
+                let roundWinner = (() => { square.forEach(block => {
                     if(block.style.pointerEvents == 'none'){
+                        _gameboard = ['', '', '', '', '', '', '', '', ''];
+                        numbersX.length = 0;
+                        numbersO.length = 0;
+                        draw.length = 0;
+                        winO = 'false'
+                        winX = 'false'
+                      
                         setTimeout(() => {
                             let svgselect = document.querySelectorAll('svg')
-                            _gameboard = ['', '', '', '', '', '', '', '', ''];
-                            numbersX.length = 0;
-                            numbersO.length = 0;
-                            winO = 'false'
-                            winX = 'false'
                             svgselect.forEach(svj => {
                                 svj.style.opacity = '0'
                             });
@@ -161,12 +167,53 @@ const gameboard = (function() {
                         
                     }
                 });
+                })();
+
+                let drawWinner = (() => { 
+                    draw = _gameboard.filter(word => word != '')
+                    if(draw.length == 9 && winO != true && winX != true){
+                     
+                        _gameboard = ['', '', '', '', '', '', '', '', ''];
+                        numbersX.length = 0;
+                        numbersO.length = 0;
+                        draw.length = 0;
+                        winO = 'false'
+                        winX = 'false'
+                        
+                        square.forEach(block => {
+                            block.style.pointerEvents = 'none'
+                            square.forEach(element => {
+                                element.style.backgroundColor = 'rgba(230, 12, 12, 0.267)';
+                            });
+                                
+                            setTimeout(() => {
+                                let svgselect = document.querySelectorAll('svg')
+
+                                svgselect.forEach(svj => {
+                                    svj.style.opacity = '0'
+                                });
+                                setTimeout(() => {
+                                    svgselect.forEach(svj => {
+                                        svj.remove()
+                                    });
+                                    square.forEach(sqre => {
+                                        sqre.style.backgroundColor = 'rgba(226, 226, 226, 0.397)'
+                                    })
+                                }, 300);
+                                block.style.pointerEvents = 'all'
+                            }, 2000);
+                        });
+                    }
+                })();
+            
+
+                //the win gets set to false, then ur checking if its false so obviously it would be
                 
             })
-            
+
         }
-    }
-    eachSquare();
+    })();
+    
 
 
 
@@ -235,13 +282,11 @@ const displayController = (function() {
                 });
             });
         }
-
-
         
         }
 
 
-  
+
 
     let squareEffect = () => {
         square.forEach(element => {
@@ -265,24 +310,13 @@ const playerFactory = function(name){
 
 
 
-
-        // else if(_gameboard[el] == 'o' &&_gameboard.length <= 9){
-        //     let svg = document.createElement('svg')
-        //     svg.innerHTML = '<svg width="125px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M224 96C135.6 96 64 167.6 64 256s71.6 160 160 160s160-71.6 160-160s-71.6-160-160-160zM0 256C0 132.3 100.3 32 224 32s224 100.3 224 224s-100.3 224-224 224S0 379.7 0 256z"/></svg>'
-        //     element.appendChild(svg)
-        //     let svgselect = document.querySelectorAll('svg')
-        //     svgselect.forEach(ele => {
-        //         ele.style.transition = "opacity 0.5s linear";
-        //         setTimeout(function() {
-        //             ele.style.opacity = 1;
-        //         }, 0);
-        //     });
-        // }
-
 //so check where the player has inputted and have it randomly place one, afterwards to advance it take into account where the player will place to win and place it there
 
 //so counter and use a modular so if it has 0 remainder then the other player goes/bot/
 
 //winner screen
 
-//if none are empty then it is a draw.
+//if none are empty then it is a draw. ( this is wrong since they are all perpetually full, actually check if they are all not '' 
+//like != '' that would work)
+
+//need to add draw, a popup of the person going, a score tally, 
