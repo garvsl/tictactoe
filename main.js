@@ -103,9 +103,8 @@ const gameboard = (function() {
         let counter = 1;
         round = 1
         for(let i = 0 ; i < _gameboard.length; i++){
-
-        
-            square[i].addEventListener('click', () => {
+            
+            function addSymbols(){
 
                 if(_gameboard[i] != 'x' && _gameboard[i] != 'o' && counter % 2 != 0){
                     let svg = document.createElement('svg')
@@ -243,15 +242,21 @@ const gameboard = (function() {
 
                 //the win gets set to false, then ur checking if its false so obviously it would be
                 
-            })
+            }
+
+            square[i].addEventListener('click', addSymbols) 
 
         }
     })();
     
+    let draw = _gameboard.filter(word => word != '')
+
     let reset = () => {
         square.forEach(block => {
-            block.style.pointerEvents = 'none'
-                
+            numbersX.length = 0;
+            _gameboard = ['', '', '', '', '', '', '', '', ''];
+            numbersO.length = 0;
+            draw.length = 0;
             setTimeout(() => {
                 let svgselect = document.querySelectorAll('svg')
 
@@ -266,12 +271,12 @@ const gameboard = (function() {
                         sqre.style.backgroundColor = 'rgba(226, 226, 226, 0.397)'
                     })
                 }, 300);
-                block.style.pointerEvents = 'none'
-                // block.style.pointerEvents = 'all'
             }, 2000);
         });
         
     }
+
+
 
 
 
@@ -334,22 +339,37 @@ const displayController = (function() {
     let score = document.getElementById('score')
     let gameX;
     let gameO;
+    let winningscreen = document.querySelector('.winningscreen')
+    let squares = document.querySelector('.squares')
     let design = () => {
         if(gameboard.winX() == true){
             round++
             if(round > 5){
+                gameboard.numbersX.forEach(element => {
+                    square[element].style.backgroundColor = 'rgba(82, 255, 148, 0.5)'
+                    square.forEach(block => {
+                        block.style.pointerEvents = 'none';
+                    });
+                });
                 gameX = 'win'
                 gameboard.reset()
-                let round = 1;
-                let xScore = 0
-                let oScore = 0
+                round = 1;
+                xScore = 0
+                oScore = 0
+                squares.style.pointerEvents = 'none'
                 setTimeout(() => {
-                    container.style.display = 'none'
-                }, 1500);
-               container.style.opacity = 0;
+                    winningscreen.style.opacity = 1;
+                    winningscreen.style.transform = 'translateX(-50%)translateY(-50%)scale(1)'
+                }, 1000);
+                winningscreen.style.display = 'flex'
+                score.textContent = `${round}/5`
+                first.textContent = xScore
+
+                
                 return;
                 
             }
+
             setTimeout(() => {
                 score.textContent = `${round}/5`
             }, 2000);
@@ -368,7 +388,7 @@ const displayController = (function() {
             }, 1250);
 
             
-
+            squares.style.pointerEvents = 'none'
             
             gameboard.numbersX.forEach(element => {
                 square[element].style.backgroundColor = 'rgba(82, 255, 148, 0.5)'
@@ -381,13 +401,17 @@ const displayController = (function() {
             if(round > 5){
                 gameO = 'win'
                 gameboard.reset()
-                let round = 1;
-                let xScore = 0
-                let oScore = 0
+                round = 1;
+                xScore = 0
+                oScore = 0
+                squares.style.pointerEvents = 'none'
                 setTimeout(() => {
-                    container.style.display = 'none'
-                }, 1500);
-               container.style.opacity = 0;
+                    winningscreen.style.opacity = 1;
+                    winningscreen.style.transform = 'translateX(-50%)translateY(-50%)scale(1)'
+                }, 1000);
+                winningscreen.style.display = 'flex'
+                score.textContent = `${round}/5`
+                second.textContent = OScore
                 return;
                 
             }
@@ -443,13 +467,9 @@ const playerFactory = function(name){
 
 //so check where the player has inputted and have it randomly place one, afterwards to advance it take into account where the player will place to win and place it there
 
-//so counter and use a modular so if it has 0 remainder then the other player goes/bot/
 
 //winner screen
+//and a replay button
 
-// a popup of the person going, a score tally, 
 
-//have the counte rbe the amount of rounds and stop when there are 5 rounds then display whoever has more.
-
-//have whoever gets a points score change to green for a sec
-//have round do similar
+//opacity for intro when it coems into view

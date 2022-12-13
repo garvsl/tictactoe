@@ -21,6 +21,47 @@ body{
 
 }
 
+.winningscreen{
+    position:absolute;
+    background-color: rgb(36, 49, 168);
+    grid-column: 1/-1;
+    grid-row:1/-1;
+    height:250px;
+    width:500px;
+    left:50%;
+    flex-direction: column;
+    align-items: center;
+    top:50%;
+    transform: translateX(-50%)translateY(-50%)scale(0);
+    border-radius: 25px;
+    color:white;
+    font-family: 'Press Start 2P', cursive;
+    display:flex;
+    justify-content: center;
+    user-select: none;
+    border:5px solid white;
+   transition: 1s ease-in-out;
+   display: none;
+    opacity:0;
+
+    
+}
+
+.winningscreen h3{
+    border-radius: 25px;
+    border:2px solid white;
+    padding:15px;
+    cursor: pointer;
+    text-shadow: 0px 0px 3px white;
+    transition: 0.25s ease-in-out;
+}
+
+.winningscreen h3:hover{
+    color:black;
+    background-color: white;
+    text-shadow: 0px 0px 3px black;
+}
+
 .playerturn{
     margin-top: 3rem;
     font-family: 'Amatic SC', cursive;
@@ -111,6 +152,7 @@ body{
     gap:20px;
     grid-auto-flow: column;
     justify-content: center;
+    
 
 }
 
@@ -122,6 +164,7 @@ body{
     display:flex;
     justify-content: center;
     align-items: center;
+
 }
 
 svg{
