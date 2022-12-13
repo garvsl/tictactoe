@@ -11,13 +11,28 @@ body{
     height:100vh;
     display:grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 0.1fr 1fr;
-    /* opacity: 0;
-    transition: 1s ease-in-out  ;
-    display:none; */
-/* HERE */
+    grid-template-rows: 0.1fr 0.1fr 2fr 0.1fr;
+    justify-content: center;
+    /* opacity: 0; */
+    transition: 1s ease-in-out;
+    /* display:none; */ 
+ 
 
 
+}
+
+.playerturn{
+    margin-top: 3rem;
+    font-family: 'Amatic SC', cursive;
+    text-shadow: 0px 0px 1.5px black;
+    font-size:2rem;
+    transition:all 0.250s ease-in-out;
+    grid-column: 1/-1;
+    color:red;
+    display:flex;
+    transition: 0.5s ease-in-out;
+    user-select: none;
+    justify-content: center;
 }
 
 .header{
@@ -29,10 +44,65 @@ body{
     border-bottom-left-radius: 50px;
     border-bottom-right-radius: 50px;
     display:flex;
-    justify-content: center;
+    justify-content: space-between;
+
     user-select: none;
+    align-items: center;
+    
     
 }
+
+.one, .two {
+    transition:1s ease-in-out
+}
+
+.title{
+    display:flex;
+    position:absolute;
+    width:100%;
+    justify-content: center;
+}
+
+
+.scoretitle{
+    transition: all 0.5s ease-in-out;
+    padding-left:200px;
+    transition: 0.5s ease-in-out;
+}
+
+.players{
+    padding-right:100px;
+    gap:15px;
+    display:flex;
+    transition: 0.5s ease-in-out;
+}
+
+.player:nth-child(2){
+    border-left: 1px solid rgb(255, 255, 255);
+    padding-left:15px;
+}
+
+.player{
+    transition: 0.5s ease-in-out;
+}
+
+#first{
+    color:rgb(255, 0, 0);
+    transition: 1s ease-in-out ;
+
+}
+
+#second{
+    color:blue;
+
+    transition: 1s ease-in-out ;
+
+}
+
+#score{
+    transition:1s ease-in-out
+}
+
 
 .squares{
     display:grid;
@@ -41,7 +111,6 @@ body{
     gap:20px;
     grid-auto-flow: column;
     justify-content: center;
-    align-content: center;
 
 }
 

@@ -3,6 +3,7 @@ const gameboard = (function() {
     let numbersX = [];
     let numbersO = [];
     let gametype = 'player' ///MANUALLY SET
+
     const square = document.querySelectorAll('.square')
 
     let gameSelectX = (x) => {
@@ -97,9 +98,12 @@ const gameboard = (function() {
 
         
     let eachSquare = (() => {
-
-        counter = 1;
+        const playerturn = document.querySelector('.playerturn');
+        const scoretitle = document.querySelector('.scoretitle')
+        let counter = 1;
+        round = 1
         for(let i = 0 ; i < _gameboard.length; i++){
+
         
             square[i].addEventListener('click', () => {
 
@@ -136,6 +140,42 @@ const gameboard = (function() {
                     
                 }
 
+                if(counter % 2 != 0 && winX() != true && winO() != true){
+                    playerturn.textContent = "Player 1's turn"
+                    // playerturn.style.opacity = 0;
+                    setTimeout(() => {
+                        playerturn.style.color = 'red'
+                    }, 25);
+                }else if(counter % 2 == 0 && winX() != true && winO() != true){
+                    console.log(winX())
+                    playerturn.textContent = "Player 2's turn"
+                    // playerturn.style.opacity = 0;
+                    setTimeout(() => {
+                        playerturn.style.color = 'blue'
+                    }, 25);
+                }else{
+                    playerturn.style.color = 'white'
+                    playerturn.style.textShadow = '0px 0px 0px white'
+                    setTimeout(() => {
+                        if(counter % 2 != 0 && winX() != true && winO() != true){
+                            playerturn.textContent = "Player 1's turn"
+                            // playerturn.style.opacity = 0;
+                            setTimeout(() => {
+                                playerturn.style.color = 'red'
+                                playerturn.style.textShadow = '0px 0px 1.5px black'
+                            }, 25);
+                        }else if(counter % 2 == 0 && winX() != true && winO() != true){
+                            console.log(winX())
+                            playerturn.textContent = "Player 2's turn"
+                            // playerturn.style.opacity = 0;
+                            setTimeout(() => {
+                                playerturn.style.color = 'blue'
+                                playerturn.style.textShadow = '0px 0px 1.5px black'
+                            }, 25);
+                        }
+                    }, 2000);
+                }   
+
                 
 
                 let draw = _gameboard.filter(word => word != '')
@@ -146,9 +186,6 @@ const gameboard = (function() {
                         numbersX.length = 0;
                         numbersO.length = 0;
                         draw.length = 0;
-                        winO = 'false'
-                        winX = 'false'
-                      
                         setTimeout(() => {
                             let svgselect = document.querySelectorAll('svg')
                             svgselect.forEach(svj => {
@@ -172,14 +209,10 @@ const gameboard = (function() {
                 let drawWinner = (() => { 
                     draw = _gameboard.filter(word => word != '')
                     if(draw.length == 9 && winO != true && winX != true){
-                     
                         _gameboard = ['', '', '', '', '', '', '', '', ''];
                         numbersX.length = 0;
                         numbersO.length = 0;
                         draw.length = 0;
-                        winO = 'false'
-                        winX = 'false'
-                        
                         square.forEach(block => {
                             block.style.pointerEvents = 'none'
                             square.forEach(element => {
@@ -205,6 +238,7 @@ const gameboard = (function() {
                         });
                     }
                 })();
+
             
 
                 //the win gets set to false, then ur checking if its false so obviously it would be
@@ -214,17 +248,42 @@ const gameboard = (function() {
         }
     })();
     
+    let reset = () => {
+        square.forEach(block => {
+            block.style.pointerEvents = 'none'
+                
+            setTimeout(() => {
+                let svgselect = document.querySelectorAll('svg')
+
+                svgselect.forEach(svj => {
+                    svj.style.opacity = '0'
+                });
+                setTimeout(() => {
+                    svgselect.forEach(svj => {
+                        svj.remove()
+                    });
+                    square.forEach(sqre => {
+                        sqre.style.backgroundColor = 'rgba(226, 226, 226, 0.397)'
+                    })
+                }, 300);
+                block.style.pointerEvents = 'none'
+                // block.style.pointerEvents = 'all'
+            }, 2000);
+        });
+        
+    }
 
 
 
     
-    return {winX, winO, numbersX, gametype, numbersO}
+    return {winX, winO, numbersX, gametype, numbersO, round, reset}
 
 })();
 
 const displayController = (function() {
     const square = document.querySelectorAll('.square') 
-    // const container = document.querySelector('.container')
+    let scoretitle = document.querySelector('.scoretitle')
+    const container = document.querySelector('.container')
     // const intro = document.querySelector('.intro')
     // const ai = document.querySelector('.ai')
     // const player = document.querySelector('.player')
@@ -265,9 +324,52 @@ const displayController = (function() {
     //     gameboard.gametype = 'player'
         
     // })
-
+    let round = 1;
+    let xScore = 0
+    let oScore = 0
+    let one = document.querySelector('.one') 
+    let two = document.querySelector('.two')
+    let first = document.getElementById('first')
+    let second = document.getElementById('second')
+    let score = document.getElementById('score')
+    let gameX;
+    let gameO;
     let design = () => {
         if(gameboard.winX() == true){
+            round++
+            if(round > 5){
+                gameX = 'win'
+                gameboard.reset()
+                let round = 1;
+                let xScore = 0
+                let oScore = 0
+                setTimeout(() => {
+                    container.style.display = 'none'
+                }, 1500);
+               container.style.opacity = 0;
+                return;
+                
+            }
+            setTimeout(() => {
+                score.textContent = `${round}/5`
+            }, 2000);
+
+            xScore++
+            first.style.color = 'rgb(0, 255, 0)'
+            
+            setTimeout(() => {
+                first.textContent = xScore
+ 
+            }, 500);
+
+            setTimeout(() => {
+                first.style.color = 'red'
+ 
+            }, 1250);
+
+            
+
+            
             gameboard.numbersX.forEach(element => {
                 square[element].style.backgroundColor = 'rgba(82, 255, 148, 0.5)'
                 square.forEach(block => {
@@ -275,6 +377,36 @@ const displayController = (function() {
                 });
             });
         }else if(gameboard.winO() == true){
+            round++
+            if(round > 5){
+                gameO = 'win'
+                gameboard.reset()
+                let round = 1;
+                let xScore = 0
+                let oScore = 0
+                setTimeout(() => {
+                    container.style.display = 'none'
+                }, 1500);
+               container.style.opacity = 0;
+                return;
+                
+            }
+
+            oScore++
+            second.style.color = 'rgb(0, 255, 0)'
+            
+            setTimeout(() => {
+                second.textContent = oScore
+
+            }, 500);
+            setTimeout(() => {
+                second.style.color = 'blue'
+            }, 1250);
+
+            setTimeout(() => {
+                score.textContent = `${round}/5`
+            }, 2000);
+
             gameboard.numbersO.forEach(element => {
                 square[element].style.backgroundColor = 'rgba(82, 255, 148, 0.5)'
                 square.forEach(block => {
@@ -288,7 +420,7 @@ const displayController = (function() {
 
 
 
-    let squareEffect = () => {
+    let squareEffect = (() => {
         square.forEach(element => {
             element.addEventListener('mousedown', () => {
                 element.style.scale = 0.90;
@@ -297,8 +429,7 @@ const displayController = (function() {
                 }, 125);
             })
         })
-    }
-    squareEffect();
+    })()
 
     return {design}
 
@@ -316,7 +447,9 @@ const playerFactory = function(name){
 
 //winner screen
 
-//if none are empty then it is a draw. ( this is wrong since they are all perpetually full, actually check if they are all not '' 
-//like != '' that would work)
+// a popup of the person going, a score tally, 
 
-//need to add draw, a popup of the person going, a score tally, 
+//have the counte rbe the amount of rounds and stop when there are 5 rounds then display whoever has more.
+
+//have whoever gets a points score change to green for a sec
+//have round do similar
