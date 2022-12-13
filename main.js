@@ -3,6 +3,8 @@ const gameboard = (function() {
     let numbersX = [];
     let numbersO = [];
     let gametype = 'player' ///MANUALLY SET
+    let gameX;
+    let gameO; 
 
     const square = document.querySelectorAll('.square')
 
@@ -146,7 +148,7 @@ const gameboard = (function() {
                         playerturn.style.color = 'red'
                     }, 25);
                 }else if(counter % 2 == 0 && winX() != true && winO() != true){
-                    console.log(winX())
+                    
                     playerturn.textContent = "Player 2's turn"
                     // playerturn.style.opacity = 0;
                     setTimeout(() => {
@@ -164,7 +166,7 @@ const gameboard = (function() {
                                 playerturn.style.textShadow = '0px 0px 1.5px black'
                             }, 25);
                         }else if(counter % 2 == 0 && winX() != true && winO() != true){
-                            console.log(winX())
+                           
                             playerturn.textContent = "Player 2's turn"
                             // playerturn.style.opacity = 0;
                             setTimeout(() => {
@@ -175,12 +177,14 @@ const gameboard = (function() {
                     }, 2000);
                 }   
 
+            
+
                 
 
                 let draw = _gameboard.filter(word => word != '')
                 
                 let roundWinner = (() => { square.forEach(block => {
-                    if(block.style.pointerEvents == 'none'){
+                    if(gameboard.gameO != "win" && gameboard.gameX != "win" && block.style.pointerEvents == 'none'){
                         _gameboard = ['', '', '', '', '', '', '', '', ''];
                         numbersX.length = 0;
                         numbersO.length = 0;
@@ -204,6 +208,8 @@ const gameboard = (function() {
                     }
                 });
                 })();
+
+                
 
                 let drawWinner = (() => { 
                     draw = _gameboard.filter(word => word != '')
@@ -238,11 +244,11 @@ const gameboard = (function() {
                     }
                 })();
 
-            
+            }
 
                 //the win gets set to false, then ur checking if its false so obviously it would be
                 
-            }
+
 
             square[i].addEventListener('click', addSymbols) 
 
@@ -281,7 +287,7 @@ const gameboard = (function() {
 
 
     
-    return {winX, winO, numbersX, gametype, numbersO, round, reset}
+    return {winX, winO, numbersX, gametype, numbersO, round, reset, gameO, gameX}
 
 })();
 
@@ -289,6 +295,7 @@ const displayController = (function() {
     const square = document.querySelectorAll('.square') 
     let scoretitle = document.querySelector('.scoretitle')
     const container = document.querySelector('.container')
+    
     // const intro = document.querySelector('.intro')
     // const ai = document.querySelector('.ai')
     // const player = document.querySelector('.player')
@@ -337,25 +344,27 @@ const displayController = (function() {
     let first = document.getElementById('first')
     let second = document.getElementById('second')
     let score = document.getElementById('score')
-    let gameX;
-    let gameO;
+
     let winningscreen = document.querySelector('.winningscreen')
     let squares = document.querySelector('.squares')
+    let winningtext = document.querySelector('.winningtext')
     let design = () => {
         if(gameboard.winX() == true){
             round++
             if(round > 5){
+                gameboard.gameX = 'win'
                 gameboard.numbersX.forEach(element => {
                     square[element].style.backgroundColor = 'rgba(82, 255, 148, 0.5)'
                     square.forEach(block => {
                         block.style.pointerEvents = 'none';
                     });
                 });
-                gameX = 'win'
+                gameboard.gameX = 'win'
                 gameboard.reset()
                 round = 1;
                 xScore = 0
                 oScore = 0
+                winningtext.textContent = 'Player1 Wins!'
                 squares.style.pointerEvents = 'none'
                 setTimeout(() => {
                     winningscreen.style.opacity = 1;
@@ -364,6 +373,8 @@ const displayController = (function() {
                 winningscreen.style.display = 'flex'
                 score.textContent = `${round}/5`
                 first.textContent = xScore
+                second.textContent = oScore
+                replay()
 
                 
                 return;
@@ -399,19 +410,28 @@ const displayController = (function() {
         }else if(gameboard.winO() == true){
             round++
             if(round > 5){
-                gameO = 'win'
+                gameboard.gameO = 'win'
+                gameboard.numbersO.forEach(element => {
+                    square[element].style.backgroundColor = 'rgba(82, 255, 148, 0.5)'
+                    square.forEach(block => {
+                        block.style.pointerEvents = 'none';
+                    });
+                });
                 gameboard.reset()
                 round = 1;
                 xScore = 0
                 oScore = 0
                 squares.style.pointerEvents = 'none'
+                winningtext.textContent = 'Player2 Wins!'
                 setTimeout(() => {
                     winningscreen.style.opacity = 1;
                     winningscreen.style.transform = 'translateX(-50%)translateY(-50%)scale(1)'
                 }, 1000);
                 winningscreen.style.display = 'flex'
                 score.textContent = `${round}/5`
-                second.textContent = OScore
+                second.textContent = oScore
+                first.textContent = xScore  
+                replay()
                 return;
                 
             }
@@ -455,6 +475,33 @@ const displayController = (function() {
         })
     })()
 
+
+    let replay = () => {
+        let playagain = document.querySelector('.playagain')
+            squares.style.pointerEvents = 'none'
+            square.forEach(block => {
+                block.style.pointerEvents = 'none';
+            });
+        playagain.addEventListener('click', () => {
+
+            setTimeout(() => {
+                gameboard.gameO = ''
+                gameboard.gameX = ''
+                square.forEach(block => {
+                    block.style.pointerEvents = 'all';
+                });
+                
+                winningscreen.style.opacity = 0;
+                winningscreen.style.transform = 'translateX(-50%)translateY(-50%)scale(0)'
+                
+            }, 500);
+
+            setTimeout(() => {
+                winningscreen.style.display = 'none'
+            }, 1500);
+        })
+    };
+
     return {design}
 
 })();
@@ -468,8 +515,7 @@ const playerFactory = function(name){
 //so check where the player has inputted and have it randomly place one, afterwards to advance it take into account where the player will place to win and place it there
 
 
-//winner screen
-//and a replay button
-
 
 //opacity for intro when it coems into view
+
+//after that u are done with player then its time for ai    

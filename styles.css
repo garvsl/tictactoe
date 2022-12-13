@@ -16,9 +16,27 @@ body{
     /* opacity: 0; */
     transition: 1s ease-in-out;
     /* display:none; */ 
- 
 
 
+
+}
+
+.showRound{
+
+    width:100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    top:60px;
+}
+
+
+
+.test{
+    width:100%;
+    display:flex;
+    justify-content: center;
+    
 }
 
 .winningscreen{
@@ -84,44 +102,67 @@ body{
     box-shadow: 0px 0px 5px black;
     border-bottom-left-radius: 50px;
     border-bottom-right-radius: 50px;
-    display:flex;
-    justify-content: space-between;
+    display:grid;
 
     user-select: none;
+    grid-column: 1/-1;
+    grid-row: 1/1;
     align-items: center;
+    grid-template-columns: 1fr;
+    grid-auto-flow: column;
+    
     
     
 }
+
+.scoretitle{
+    transition: all 0.5s ease-in-out;
+    font-family: 'Press Start 2P', cursive;
+    color:White;
+    text-shadow: 0px 0px 5px black;
+    transition: 0.5s ease-in-out;
+    grid-column: 1/-1;
+    grid-row: 1/-1;
+    padding-left:200px;
+    justify-self:auto;
+    
+
+}
+
+.header h1{
+    grid-column: 1/-1;
+    grid-row: 1/-1;
+    justify-self: center;
+}
+
+
+/* so put that ish on the bottom, then have tic tac toe justify self center and the other on flex-start */
 
 .one, .two {
     transition:1s ease-in-out
 }
 
-.title{
-    display:flex;
-    position:absolute;
-    width:100%;
-    justify-content: center;
-}
 
 
-.scoretitle{
-    transition: all 0.5s ease-in-out;
-    padding-left:200px;
-    transition: 0.5s ease-in-out;
-}
+
 
 .players{
-    padding-right:100px;
-    gap:15px;
+    gap:100px;
+    background-color: rgb(36, 49, 168);
     display:flex;
+    width:500px;
+    justify-content: center;
+    /* align-items: center; */
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
     transition: 0.5s ease-in-out;
+    font-family: 'Press Start 2P', cursive;
+    color:White;
+    text-shadow: 0px 0px 5px white;
+    box-shadow: 0px 0px 5px black;
 }
 
-.player:nth-child(2){
-    border-left: 1px solid rgb(255, 255, 255);
-    padding-left:15px;
-}
+
 
 .player{
     transition: 0.5s ease-in-out;
@@ -233,6 +274,7 @@ svg{
     cursor: pointer;
     user-select: none;
     box-shadow: 0px 0px 1px 2px white;
+
 }
 
 .select:hover{
