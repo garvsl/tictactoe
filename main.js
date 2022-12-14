@@ -105,10 +105,13 @@ const gameboard = (function() {
         let counter = 1;
         round = 1
         for(let i = 0 ; i < _gameboard.length; i++){
+
+            
             
             function addSymbols(){
 
                 if(_gameboard[i] != 'x' && _gameboard[i] != 'o' && counter % 2 != 0){
+                    _gameboard[i] = 'x'
                     let svg = document.createElement('svg')
                     svg.innerHTML = '<svg width="120px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"/></svg>'
                     square[i].appendChild(svg)
@@ -119,10 +122,17 @@ const gameboard = (function() {
                             ele.style.opacity = 1;
                         }, 50);
                     });
-                    _gameboard[i] = 'x'
+                    setTimeout(() => {
+                        if(counter % 2 == 0 && gameboard.gametype == 'ai'){
+                            gameboard.bestMove();
+                            counter++
+                            
+                        }
+                    }, 500);
                     console.log(_gameboard)
                     counter++
-                    displayController.design();
+                    displayController.design(_gameboard, counter);
+
                 }else if(_gameboard[i] != 'o' && _gameboard[i] != 'x' && counter % 2 == 0 && gameboard.gametype == 'player'){
                     let svg = document.createElement('svg')
                     svg.innerHTML = '<svg width="125px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M224 96C135.6 96 64 167.6 64 256s71.6 160 160 160s160-71.6 160-160s-71.6-160-160-160zM0 256C0 132.3 100.3 32 224 32s224 100.3 224 224s-100.3 224-224 224S0 379.7 0 256z"/></svg>'
@@ -137,10 +147,10 @@ const gameboard = (function() {
                     _gameboard[i] = 'o'
                     console.log(_gameboard)
                     counter++
-                    displayController.design();
+                    displayController.design(_gameboard, counter);
                     
                 }
-
+           
                 if(counter % 2 != 0 && winX() != true && winO() != true){
                     playerturn.textContent = "Player 1's turn"
                     // playerturn.style.opacity = 0;
@@ -246,9 +256,9 @@ const gameboard = (function() {
 
             }
 
-                //the win gets set to false, then ur checking if its false so obviously it would be
-                
 
+
+        
 
             square[i].addEventListener('click', addSymbols) 
 
@@ -282,12 +292,165 @@ const gameboard = (function() {
         
     }
 
+    function bestMove(counter){
+        let bestScore = -Infinity;
+        let move;
+        let svg = document.createElement('svg')
+        for (let i = 0; i < _gameboard.length; i++) {
+            if(_gameboard[i] == ''){
+                _gameboard[i] = 'o';
+                square[i].style.backgroundColor = 'red'
+                let score = minimax();
+                _gameboard[i] = '';
+                setTimeout(() => {
+                    square[i].style.backgroundColor = 'rgba(226, 226, 226, 0.397)'
+                }, 500);
+                if(score > bestScore){
+                    bestScore = score
+                    move = i;
+                    
+                }
+            }
+        }
+        // if(_gameboard[move] == '' && _gameboard[move] != 'x'){
+        //     svg.innerHTML = '<svg width="125px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M224 96C135.6 96 64 167.6 64 256s71.6 160 160 160s160-71.6 160-160s-71.6-160-160-160zM0 256C0 132.3 100.3 32 224 32s224 100.3 224 224s-100.3 224-224 224S0 379.7 0 256z"/></svg>'
+        //     square[move].appendChild(svg)
+        //     _gameboard[move] = 'o'
+        //     let svgselect = document.querySelectorAll('svg')
+        //         svgselect.forEach(ele => {
+        //             ele.style.transition = "opacity 0.5s linear";
+        //             setTimeout(function() {
+        //                 ele.style.opacity = 1;
+        //             }, 50);
+        //         });
+            
+        //     }
 
+        //you could make another function and put it in into the event listener instead of having this here
+        //you just have to return the move
+    }
+
+
+    function minimax(player){
+        
+        return 1;
+        // //use counter to determine whether player or comp
+        // let resultX = winO()
+        // let resultO = winX()
+        // draw = _gameboard.filter(word => word != '')
+        // console.log(winO())
+        // console.log(winX())
+        // console.log(draw.length)
+        // if(draw.length == 9 && resultO != true && resultX != true){
+        //     return{score : 0}
+        // }else if(resultO == true){
+        //     return{score : +10}
+        // }else if(resultX == true){
+        //     return{score : -10}
+        // }
+        
+        
+        // let empty_spaces =_gameboard.filter((element) => element == '')
+        
+        // let moves = []
+        // let move = {}
+
+        
+
+        // for (let i = 0; i < _gameboard.length; i++) {
+        //     //well there is your problem ur trying to access but array is different
+            
+        //     if(_gameboard[i] == ''){
+        //         _gameboard[i] = player
+        //         square[i].style.backgroundColor = 'red'
+        //         move.id = i
+
+        //         if(player == 'o'){
+        //             resultO = winX()
+        //             resultX = winO()
+        //             move.score = minimax('x').score
+        //         }else{ 
+        //             resultO = winX()
+        //             resultX = winO()
+        //             move.score = minimax('o').score
+        //         }
+
+        //         _gameboard[i] = ''
+        //         square[i].style.backgroundColor = 'rgba(226, 226, 226, 0.397)'
+
+                
+        //         moves.push(move)
+        //     }
+            
+
+        // }
+        
+        // let moves = []
+
+        // for (let i = 0; i < empty_spaces.length; i++) {
+        //     let id = empty_spaces[i];
+        //     let move = {}
+        //     move.id = id
+        //     let savedBoard = _gameboard[i]
+        //     if(counter % 2 != 0){
+        //         _gameboard[i] = 'x'
+        //         move.evaluation = minimax().evaluation;
+        //     }else if(counter % 2 == 0){
+        //         _gameboard[i] = 'o'
+        //         move.evaluation = minimax().evaluation;
+        //     }
+            
+        //     _gameboard[i] = savedBoard
+        //     moves.push(move);
+
+        //     // _gameboard[id] = savedBoard
+        // }
+
+        // let bestMove;
+
+        // if(counter % 2 == 0){
+        //     let bestEvaluation = -Infinity;
+        //     for (let i = 0; i < moves.length; i++) {
+        //         if(moves[i].evaluation > bestEvaluation){
+        //             bestEvaluation = moves[i].evaluation
+        //             bestMove = moves[i]
+        //         }
+                
+        //     }
+        // }else if(counter % 2 != 0 ){
+        //     let bestEvaluation = +Infinity;
+        //     for (let i = 0; i < moves.length; i++) {
+        //         if(moves[i].evaluation < bestEvaluation){
+        //             bestEvaluation = moves[i].evaluation
+        //             bestMove = moves[i]
+        //         }
+                
+        //     }
+        // }
+
+        // return bestMove;
+
+        
+            // let svg = document.createElement('svg')
+            // svg.innerHTML = '<svg width="125px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M224 96C135.6 96 64 167.6 64 256s71.6 160 160 160s160-71.6 160-160s-71.6-160-160-160zM0 256C0 132.3 100.3 32 224 32s224 100.3 224 224s-100.3 224-224 224S0 379.7 0 256z"/></svg>'
+            // element.appendChild(svg)
+            // let svgselect = document.querySelectorAll('svg')
+            // svgselect.forEach(ele => {
+            //     ele.style.transition = "opacity 0.5s linear";
+            //     setTimeout(function() {
+            //         ele.style.opacity = 1;
+            //     }, 50);
+            // });
+         
+            // counter++
+            // displayController.design();
+
+    };
 
 
 
     
-    return {winX, winO, numbersX, gametype, numbersO, round, reset, gameO, gameX}
+    return {winX, winO, numbersX, gametype, numbersO, round, reset, gameO, gameX, minimax, bestMove}
 
 })();
 
@@ -350,7 +513,47 @@ const displayController = (function() {
     let winningscreen = document.querySelector('.winningscreen')
     let squares = document.querySelector('.squares')
     let winningtext = document.querySelector('.winningtext')
-    let design = () => {
+    let design = (_gameboard, counter) => {
+        draw = _gameboard.filter(word => word != '')
+        if(draw.length == 9 && gameboard.winX() != true && gameboard.winO() != true){
+            round++
+            setTimeout(() => {
+                score.textContent = `${round}/5`
+            }, 2000);
+           
+        }
+        if(draw.length == 9 && round == 5 && gameboard.winX() != true && gameboard.winO() != true){
+            if(xScore == oScore){
+                winningtext.textContent = 'Tie!'
+                gameboard.gameX = 'win'
+                gameboard.gameO = 'win'
+                square.forEach(block => {
+                    block.style.pointerEvents = 'none';
+                    block.style.backgroundColor = 'rgba(230, 12, 12, 0.267)';
+                });
+            
+
+                gameboard.reset()
+                round = 1;
+                xScore = 0
+                oScore = 0
+
+               
+                squares.style.pointerEvents = 'none'
+                setTimeout(() => {
+                    winningscreen.style.opacity = 1;
+                    winningscreen.style.transform = 'translateX(-50%)translateY(-50%)scale(1)'
+                }, 1000);
+                winningscreen.style.display = 'flex'
+                score.textContent = `${round}/5`
+                first.textContent = xScore
+                second.textContent = oScore
+                replay()
+
+                return;
+
+            }
+        }
         if(gameboard.winX() == true){
             round++
             if(round > 5){
@@ -359,6 +562,8 @@ const displayController = (function() {
                     winningtext.textContent = 'Player1 Wins!'
                 }else if(oScore > xScore){
                     winningtext.textContent = 'Player2 Wins!'
+                }else if(xScore == oScore){
+                    winningtext.textContent = 'Tie!'
                 }
                 
                 gameboard.gameX = 'win'
@@ -391,11 +596,14 @@ const displayController = (function() {
                 
             }
 
+            _gameboard = ['', '', '', '', '', '', '', '', ''];
+
             setTimeout(() => {
                 score.textContent = `${round}/5`
             }, 2000);
 
             xScore++
+            counter = 1;
             first.style.color = 'rgb(0, 255, 0)'
             
             setTimeout(() => {
@@ -425,6 +633,8 @@ const displayController = (function() {
                     winningtext.textContent = 'Player1 Wins!'
                 }else if(oScore > xScore){
                     winningtext.textContent = 'Player2 Wins!'
+                }else if(xScore == oScore){
+                    winningtext.textContent = 'Tie!'
                 }
                 gameboard.gameO = 'win'
                 gameboard.numbersO.forEach(element => {
@@ -451,6 +661,8 @@ const displayController = (function() {
                 return;
                 
             }
+            
+            _gameboard = ['', '', '', '', '', '', '', '', ''];
 
             oScore++
             second.style.color = 'rgb(0, 255, 0)'
@@ -532,8 +744,9 @@ const playerFactory = function(name){
 
 
 
-//opacity for intro when it coems into view
 
 //after that u are done with player then its time for ai    
 
-//u are letting the person who wins last win, not the person with most points
+
+//add a point to the round for a draw, and stop once it reaches round 5.
+//if the score is equal then run through the draw function and make it display a tie.
