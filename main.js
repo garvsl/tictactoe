@@ -347,14 +347,14 @@ const gameboard = (function() {
         
     }
 
-    function bestMove(counter){
+    function bestMove(){
         let bestScore = -Infinity;
         let move;
         let svg = document.createElement('svg')
         for (let i = 0; i < _gameboard.length; i++) {
             if(_gameboard[i] == ''){
                 _gameboard[i] = 'o';
-                let score = minimax();
+                let score = minimax(0, false);
                 _gameboard[i] = '';
                 if(score > bestScore){
                     bestScore = score
@@ -383,10 +383,60 @@ const gameboard = (function() {
         //you just have to return the move
     }
 
+    function checkWinner(){
 
-    function minimax(player){
-        
-        return 1;
+    let draw = _gameboard.filter(word => word != '')
+        if(winO() == true){
+            return 'O';
+        }else if(winX() == true){
+            return 'X';
+        }else if(draw.length == 9 && winO() != true && winX() != true){
+            return 'tie';
+        }else{
+            return false;
+        }
+    }
+
+    let scores = {
+        X: -1,
+        O: 1,
+        tie: 0
+    }
+
+
+    function minimax(depth, isMaximizng){
+        let result = checkWinner();
+        if(result != false){
+            let score = scores[result];
+            return score;
+        }
+
+        if(isMaximizng){
+            let bestScore = -Infinity
+            for (let i = 0; i < _gameboard.length; i++) {
+                if(_gameboard[i] == ''){
+                    _gameboard[i] = 'o';
+                    let score = minimax(depth + 1, false)
+                    _gameboard[i] = '';
+                    bestScore = Math.max(score, bestScore)
+
+                }
+            }
+            return bestScore;
+        }else{
+            let bestScore = Infinity
+            for (let i = 0; i < _gameboard.length; i++) {
+                if(_gameboard[i] == ''){
+                    _gameboard[i] = 'x';
+                    let score = minimax(depth + 1, true)
+                    _gameboard[i] = '';
+                    bestScore = Math.min(score, bestScore)
+                    
+                }
+            }
+            return bestScore;
+        }
+
         // //use counter to determine whether player or comp
         // let resultX = winO()
         // let resultO = winX()
