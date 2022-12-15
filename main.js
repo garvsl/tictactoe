@@ -103,7 +103,7 @@ const gameboard = (function() {
         const playerturn = document.querySelector('.playerturn');
         const scoretitle = document.querySelector('.scoretitle')
         let counter = 1;
-        round = 1
+        // round = 1
         for(let i = 0 ; i < _gameboard.length; i++){
 
             
@@ -128,16 +128,6 @@ const gameboard = (function() {
                         
                             gameboard.bestMove();
                             counter++
-                     
-
-                            // winX();
-                            // winO();
-                            // displayController.design(_gameboard, counter);
-                            // console.log(_gameboard)
-                            //make ur own function for when its ai, and change the other one to not work when gametype is ai.
-                            //
-                            //&& gameboard.gametype == 'ai
-                            //counter isnt going up so its not
                             winO();
                             displayController.design(_gameboard, counter);
                             if(winO() == true){
@@ -164,7 +154,6 @@ const gameboard = (function() {
                         setTimeout(() => {
                             playerturn.style.color = 'red'
                             playerturn.textContent = "Player 1's turn"
-                           
                         }, 1150);
                         }
                     ;
@@ -184,7 +173,10 @@ const gameboard = (function() {
                     }
                     console.log(_gameboard)
                     
-                    displayController.design(_gameboard, counter);
+                    if(counter % 2 != 0 && gameboard.gametype == 'ai' && winX() != true){
+                        displayController.design(_gameboard, counter);
+                    }
+                    
 
                 }else if(_gameboard[i] != 'o' && _gameboard[i] != 'x' && counter % 2 == 0 && gameboard.gametype == 'player'){
                     let svg = document.createElement('svg')
@@ -374,13 +366,10 @@ const gameboard = (function() {
                         ele.style.opacity = 1;
                     }, 50);
                 });
-            //so when the gameboard gets cleared the ai takes that opportunity to place the O, and it stays till next round, so maybe ptua  timeout.
-            //and something is wrong with display controller.
-            //check other comments
+        
             }
 
-        //you could make another function and put it in into the event listener instead of having this here
-        //you just have to return the move
+
     }
 
     function checkWinner(){
@@ -437,123 +426,12 @@ const gameboard = (function() {
             return bestScore;
         }
 
-        // //use counter to determine whether player or comp
-        // let resultX = winO()
-        // let resultO = winX()
-        // draw = _gameboard.filter(word => word != '')
-        // console.log(winO())
-        // console.log(winX())
-        // console.log(draw.length)
-        // if(draw.length == 9 && resultO != true && resultX != true){
-        //     return{score : 0}
-        // }else if(resultO == true){
-        //     return{score : +10}
-        // }else if(resultX == true){
-        //     return{score : -10}
-        // }
-        
-        
-        // let empty_spaces =_gameboard.filter((element) => element == '')
-        
-        // let moves = []
-        // let move = {}
-
-        
-
-        // for (let i = 0; i < _gameboard.length; i++) {
-        //     //well there is your problem ur trying to access but array is different
-            
-        //     if(_gameboard[i] == ''){
-        //         _gameboard[i] = player
-        //         square[i].style.backgroundColor = 'red'
-        //         move.id = i
-
-        //         if(player == 'o'){
-        //             resultO = winX()
-        //             resultX = winO()
-        //             move.score = minimax('x').score
-        //         }else{ 
-        //             resultO = winX()
-        //             resultX = winO()
-        //             move.score = minimax('o').score
-        //         }
-
-        //         _gameboard[i] = ''
-        //         square[i].style.backgroundColor = 'rgba(226, 226, 226, 0.397)'
-
-                
-        //         moves.push(move)
-        //     }
-            
-
-        // }
-        
-        // let moves = []
-
-        // for (let i = 0; i < empty_spaces.length; i++) {
-        //     let id = empty_spaces[i];
-        //     let move = {}
-        //     move.id = id
-        //     let savedBoard = _gameboard[i]
-        //     if(counter % 2 != 0){
-        //         _gameboard[i] = 'x'
-        //         move.evaluation = minimax().evaluation;
-        //     }else if(counter % 2 == 0){
-        //         _gameboard[i] = 'o'
-        //         move.evaluation = minimax().evaluation;
-        //     }
-            
-        //     _gameboard[i] = savedBoard
-        //     moves.push(move);
-
-        //     // _gameboard[id] = savedBoard
-        // }
-
-        // let bestMove;
-
-        // if(counter % 2 == 0){
-        //     let bestEvaluation = -Infinity;
-        //     for (let i = 0; i < moves.length; i++) {
-        //         if(moves[i].evaluation > bestEvaluation){
-        //             bestEvaluation = moves[i].evaluation
-        //             bestMove = moves[i]
-        //         }
-                
-        //     }
-        // }else if(counter % 2 != 0 ){
-        //     let bestEvaluation = +Infinity;
-        //     for (let i = 0; i < moves.length; i++) {
-        //         if(moves[i].evaluation < bestEvaluation){
-        //             bestEvaluation = moves[i].evaluation
-        //             bestMove = moves[i]
-        //         }
-                
-        //     }
-        // }
-
-        // return bestMove;
-
-        
-            // let svg = document.createElement('svg')
-            // svg.innerHTML = '<svg width="125px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M224 96C135.6 96 64 167.6 64 256s71.6 160 160 160s160-71.6 160-160s-71.6-160-160-160zM0 256C0 132.3 100.3 32 224 32s224 100.3 224 224s-100.3 224-224 224S0 379.7 0 256z"/></svg>'
-            // element.appendChild(svg)
-            // let svgselect = document.querySelectorAll('svg')
-            // svgselect.forEach(ele => {
-            //     ele.style.transition = "opacity 0.5s linear";
-            //     setTimeout(function() {
-            //         ele.style.opacity = 1;
-            //     }, 50);
-            // });
-         
-            // counter++
-            // displayController.design();
-
     };
 
 
 
     
-    return {winX, winO, numbersX, gametype, numbersO, round, reset, gameO, gameX, minimax, bestMove}
+    return {winX, winO, numbersX, gametype, numbersO, reset, gameO, gameX, bestMove}
 
 })();
 
@@ -618,14 +496,9 @@ const displayController = (function() {
     let winningtext = document.querySelector('.winningtext')
     let design = (_gameboard, counter) => {
         draw = _gameboard.filter(word => word != '')
-        if(draw.length == 9 && gameboard.winX() != true && gameboard.winO() != true ){
-            round++
-            setTimeout(() => {
-                score.textContent = `${round}/5`
-            }, 2000);
-           
-        }
-        if(draw.length == 9 && round == 5 && gameboard.winX() != true && gameboard.winO() != true){
+        console.log(draw)
+        if(draw.length == 9 && round > 5 && gameboard.winX() != true && gameboard.winO() != true){
+            console.log('hi')
             if(xScore == oScore){
                 winningtext.textContent = 'Tie!'
                 gameboard.gameX = 'win'
@@ -641,7 +514,6 @@ const displayController = (function() {
                 xScore = 0
                 oScore = 0
 
-               
                 squares.style.pointerEvents = 'none'
                 setTimeout(() => {
                     winningscreen.style.opacity = 1;
@@ -657,7 +529,17 @@ const displayController = (function() {
 
             }
         }
-        if(gameboard.winX() == true ){
+        if(draw.length == 9 && gameboard.winX() != true && gameboard.winO() != true && round <= 5){
+            setTimeout(() => {
+                round++
+                score.textContent = `${round}/5`
+                
+            }, 2000);
+
+
+            
+        }
+        else if(gameboard.winX() == true ){
             round++
             if(round > 5){
                 xScore++
@@ -683,7 +565,6 @@ const displayController = (function() {
                 oScore = 0
                 
 
-               
                 squares.style.pointerEvents = 'none'
                 setTimeout(() => {
                     winningscreen.style.opacity = 1;
@@ -699,9 +580,6 @@ const displayController = (function() {
                 return;
                 
             }
-
-           
-
             setTimeout(() => {
                 score.textContent = `${round}/5`
             }, 2000);
@@ -711,12 +589,10 @@ const displayController = (function() {
             
             setTimeout(() => {
                 first.textContent = xScore
- 
             }, 500);
 
             setTimeout(() => {
                 first.style.color = 'red'
- 
             }, 1250);
 
             
@@ -751,7 +627,6 @@ const displayController = (function() {
                 xScore = 0
                 oScore = 0
                 squares.style.pointerEvents = 'none'
- 
                 setTimeout(() => {
                     winningscreen.style.opacity = 1;
                     winningscreen.style.transform = 'translateX(-50%)translateY(-50%)scale(1)'
@@ -765,7 +640,6 @@ const displayController = (function() {
                 
             }
             
-          
 
             oScore++
             second.style.color = 'rgb(0, 255, 0)'
@@ -837,9 +711,7 @@ const displayController = (function() {
 
 })();
 
-const playerFactory = function(name){
 
-}
 
 
 
@@ -853,3 +725,16 @@ const playerFactory = function(name){
 
 //add a point to the round for a draw, and stop once it reaches round 5.
 //if the score is equal then run through the draw function and make it display a tie.
+
+//fix scores
+
+//so color on ai win, and when its a draw round goes up by 2
+
+//color on ai win i think it is because it goes in all spots and winO() is run which calculates it so something like that u can check in console
+//yeah no bueno 971k so win is being repeated probably
+//and winX too so that is something with the ai
+//so the color is with the x too u woulndtk now because u cant win
+
+//for the round the design is not being called at all because of weird order and stuff, just clean it all up really.
+
+//alpha beta pruning
