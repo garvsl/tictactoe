@@ -346,7 +346,7 @@ const gameboard = (function() {
         for (let i = 0; i < _gameboard.length; i++) {
             if(_gameboard[i] == ''){
                 _gameboard[i] = 'o';
-                let score = minimax(0, false);
+                let score = minimax(3, false, -Infinity, Infinity);
                 _gameboard[i] = '';
                 if(score > bestScore){
                     bestScore = score
@@ -355,6 +355,8 @@ const gameboard = (function() {
                 }
             }
         }
+        numbersO.length = 0;    
+        winO()
         if(_gameboard[move] == '' && _gameboard[move] != 'x'){
             svg.innerHTML = '<svg width="125px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M224 96C135.6 96 64 167.6 64 256s71.6 160 160 160s160-71.6 160-160s-71.6-160-160-160zM0 256C0 132.3 100.3 32 224 32s224 100.3 224 224s-100.3 224-224 224S0 379.7 0 256z"/></svg>'
             square[move].appendChild(svg)
@@ -393,9 +395,9 @@ const gameboard = (function() {
     }
 
 
-    function minimax(depth, isMaximizng){
+    function minimax(depth, isMaximizng, alpha, beta){
         let result = checkWinner();
-        if(result != false){
+        if(result != false || depth == 0){
             let score = scores[result];
             return score;
         }
@@ -405,9 +407,13 @@ const gameboard = (function() {
             for (let i = 0; i < _gameboard.length; i++) {
                 if(_gameboard[i] == ''){
                     _gameboard[i] = 'o';
-                    let score = minimax(depth + 1, false)
+                    let score = minimax(depth + 1, false, alpha, beta)
                     _gameboard[i] = '';
                     bestScore = Math.max(score, bestScore)
+                    alpha = Math.max(alpha, score)
+                    if(beta <= alpha){
+                        break;
+                    }
 
                 }
             }
@@ -417,10 +423,13 @@ const gameboard = (function() {
             for (let i = 0; i < _gameboard.length; i++) {
                 if(_gameboard[i] == ''){
                     _gameboard[i] = 'x';
-                    let score = minimax(depth + 1, true)
+                    let score = minimax(depth + 1, true, alpha, beta)
                     _gameboard[i] = '';
                     bestScore = Math.min(score, bestScore)
-                    
+                    beta = Math.min(beta, score)
+                    if(beta <= alpha){
+                        break;
+                    }
                 }
             }
             return bestScore;
