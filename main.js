@@ -171,12 +171,15 @@ const gameboard = (function() {
                                 draw.length = 0;
                             }, 3000)
                     }
-                    console.log(_gameboard)
+               
                     
                     if(counter % 2 != 0 && gameboard.gametype == 'ai' && winX() != true){
                         displayController.design(_gameboard, counter);
                     }
-                    
+                    if(gameboard.gametype == 'player'){
+                        displayController.design(_gameboard, counter);
+                    }
+
 
                 }else if(_gameboard[i] != 'o' && _gameboard[i] != 'x' && counter % 2 == 0 && gameboard.gametype == 'player'){
                     let svg = document.createElement('svg')
@@ -190,9 +193,8 @@ const gameboard = (function() {
                         }, 50);
                     });
                     _gameboard[i] = 'o'
-                    console.log(_gameboard)
-                    counter++
                     displayController.design(_gameboard, counter);
+                    counter++
                     
                 }
            
@@ -505,9 +507,7 @@ const displayController = (function() {
     let winningtext = document.querySelector('.winningtext')
     let design = (_gameboard, counter) => {
         draw = _gameboard.filter(word => word != '')
-        console.log(draw)
-        if(draw.length == 9 && round > 5 && gameboard.winX() != true && gameboard.winO() != true){
-            console.log('hi')
+        if(draw.length == 9 && round >= 5 && gameboard.winX() != true && gameboard.winO() != true){
             if(xScore == oScore){
                 winningtext.textContent = 'Tie!'
                 gameboard.gameX = 'win'
@@ -536,13 +536,65 @@ const displayController = (function() {
 
                 return;
 
+            }else if(xScore > oScore){
+                winningtext.textContent = 'Player1 Wins!'
+                gameboard.gameX = 'win'
+                square.forEach(block => {
+                    block.style.pointerEvents = 'none';
+                    block.style.backgroundColor = 'rgba(230, 12, 12, 0.267)';
+                });
+            
+
+                gameboard.reset()
+                round = 1;
+                xScore = 0
+                oScore = 0
+
+                squares.style.pointerEvents = 'none'
+                setTimeout(() => {
+                    winningscreen.style.opacity = 1;
+                    winningscreen.style.transform = 'translateX(-50%)translateY(-50%)scale(1)'
+                }, 1000);
+                winningscreen.style.display = 'flex'
+                score.textContent = `${round}/5`
+                first.textContent = xScore
+                second.textContent = oScore
+                replay()
+
+                return;
+            }else if(oScore > xScore){
+                winningtext.textContent = 'Player2 Wins!'
+                gameboard.gameO = 'win'
+                square.forEach(block => {
+                    block.style.pointerEvents = 'none';
+                    block.style.backgroundColor = 'rgba(230, 12, 12, 0.267)';
+                });
+            
+
+                gameboard.reset()
+                round = 1;
+                xScore = 0
+                oScore = 0
+
+                squares.style.pointerEvents = 'none'
+                setTimeout(() => {
+                    winningscreen.style.opacity = 1;
+                    winningscreen.style.transform = 'translateX(-50%)translateY(-50%)scale(1)'
+                }, 1000);
+                winningscreen.style.display = 'flex'
+                score.textContent = `${round}/5`
+                first.textContent = xScore
+                second.textContent = oScore
+                replay()
+
+                return;
             }
         }
-        if(draw.length == 9 && gameboard.winX() != true && gameboard.winO() != true && round <= 5){
+        if(draw.length == 9 && gameboard.winX() != true && gameboard.winO() != true && round < 5){
             setTimeout(() => {
                 round++
                 score.textContent = `${round}/5`
-                
+              
             }, 2000);
 
 
@@ -550,6 +602,7 @@ const displayController = (function() {
         }
         else if(gameboard.winX() == true ){
             round++
+            
             if(round > 5){
                 xScore++
                 if(xScore > oScore){
@@ -616,7 +669,7 @@ const displayController = (function() {
         }else if(gameboard.winO() == true){
             round++
             if(round > 5){
-                xScore++
+                oScore++
                 if(xScore > oScore){
                     winningtext.textContent = 'Player1 Wins!'
                 }else if(oScore > xScore){
@@ -631,6 +684,7 @@ const displayController = (function() {
                         block.style.pointerEvents = 'none';
                     });
                 });
+                gameboard.gameO = 'win'
                 gameboard.reset()
                 round = 1;
                 xScore = 0
@@ -721,29 +775,4 @@ const displayController = (function() {
 })();
 
 
-
-
-
-//so check where the player has inputted and have it randomly place one, afterwards to advance it take into account where the player will place to win and place it there
-
-
-
-
-//after that u are done with player then its time for ai    
-
-
-//add a point to the round for a draw, and stop once it reaches round 5.
-//if the score is equal then run through the draw function and make it display a tie.
-
-//fix scores
-
-//so color on ai win, and when its a draw round goes up by 2
-
-//color on ai win i think it is because it goes in all spots and winO() is run which calculates it so something like that u can check in console
-//yeah no bueno 971k so win is being repeated probably
-//and winX too so that is something with the ai
-//so the color is with the x too u woulndtk now because u cant win
-
-//for the round the design is not being called at all because of weird order and stuff, just clean it all up really.
-
-//alpha beta pruning
+//ISSUE WITH END OF FINISH OF AI GAME, POINTERS DONT GET SET TO NONE SO PLAYER IS ABLE TO PLACE WHILE WINNING SCREEN IS UP.

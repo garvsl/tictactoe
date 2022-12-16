@@ -150,8 +150,10 @@ body{
     gap:100px;
     background-color: rgb(36, 49, 168);
     display:flex;
-    width:500px;
+    max-width:500px;
     justify-content: center;
+    padding-left:10px;
+    padding-right:10px;
     /* align-items: center; */
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
@@ -219,6 +221,7 @@ svg{
 }
 
 .intro{
+
     height:100vh;
     align-items: center;
     display:flex;
@@ -233,7 +236,7 @@ svg{
 }
 
 .active{
-    scale:1.001;
+    scale:1;
     display:flex;
     align-items: center;
     justify-content: center;
@@ -281,4 +284,97 @@ svg{
 .select:hover{
     background-color: rgb(7, 7, 7);
     scale: 1.05;
+}
+
+
+@media (max-width:1500px) {
+
+    .scoretitle{
+        display: none;
+    }
+}
+
+@media (max-width:700px) {
+    .active{
+        width:250px;
+    }
+    
+    .welcome{
+        font-size: 0.9rem;
+        flex-wrap:wrap;
+        word-wrap: normal;
+    }
+
+    .selections{
+        width:225px;
+    }
+    
+    .select{
+        width:25px;
+        font-size: 0.7rem;;
+    }
+
+    .select:nth-child(2){
+        width:75px;
+    }
+
+    .squares{
+        grid-template-columns: repeat(3, 150px);
+        gap:10px;
+        grid-template-rows:  repeat(3, 150px);
+     
+    }
+
+
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 0.1fr 0.1fr 0.5fr 0.1fr;
+
+    }
+    
+    .players{
+        margin-top: 15px;
+        border-radius: 25px;
+    }
+    
+
+}
+
+
+@media (max-width:500px) {
+    .squares{
+        grid-template-columns: repeat(3, 125px);
+        grid-template-rows:  repeat(3, 125px);
+     
+    }
+
+    .players{
+        gap:50px;
+    }
+}
+
+
+
+@media (max-width:500px) {
+    .squares{
+        grid-template-columns: repeat(3, 100px);
+        grid-template-rows:  repeat(3, 100px);
+     
+    }
+
+    .header h1{
+        font-size:1.5rem;
+    }
+
+    .header{
+        border-radius: 0;
+    }
+
+    .players{
+        width:300px;
+    }
+
+    .players h4{
+        font-size:0.65rem;
+    }
 }
