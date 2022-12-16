@@ -290,10 +290,7 @@ svg{
 @media (max-width:1500px) {
 
     .scoretitle{
-       position: absolute;
-       bottom:75px;
-       left:43%;
-       transform: translateX(-50%);
+        display: none;
     }
 }
 
