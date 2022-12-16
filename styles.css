@@ -356,6 +356,18 @@ svg{
 
 
 @media (max-width:500px) {
+
+    .intro{
+        border:none;
+    }
+
+    .active{
+        border:none;
+    }
+    
+    .active{
+        border:none;
+    }
     .squares{
         grid-template-columns: repeat(3, 100px);
         grid-template-rows:  repeat(3, 100px);
@@ -372,9 +384,15 @@ svg{
 
     .players{
         width:300px;
+        align-items:center;
+        margin-top:5px;
     }
 
     .players h4{
         font-size:0.65rem;
+    }
+
+    svg{
+        width: 50px;
     }
 }
