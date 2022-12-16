@@ -290,11 +290,27 @@ svg{
 @media (max-width:1500px) {
 
     .scoretitle{
-        display: none;
+       position: absolute;
+       bottom:75px;
+       left:43%;
+       transform: translateX(-50%);
     }
 }
 
 @media (max-width:700px) {
+
+    .scoretitle{
+        position: absolute;
+        bottom:180px;
+        left:35%;
+        transform: translateX(-50%);
+     }
+
+    .winningscreen{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
     .active{
         width:250px;
     }
@@ -307,15 +323,23 @@ svg{
 
     .selections{
         width:225px;
+        justify-content: center;
+        padding:30px;
+        align-items: center;
     }
     
     .select{
         width:25px;
-        font-size: 0.7rem;;
+        
+
+        font-size: 0.6rem;;
     }
 
     .select:nth-child(2){
-        width:75px;
+        width:85px;
+        padding-left:10px;
+        padding-right:10px;
+    
     }
 
     .squares{
@@ -357,16 +381,30 @@ svg{
 
 @media (max-width:500px) {
 
+    .scoretitle{
+        position: absolute;
+        bottom:125px;
+        left:33%;
+        transform: translateX(-50%);
+        width:250px;
+    }
+
+    .winningtext{
+        font-size: 1em;
+    }
+
+    .playagain{
+        text-shadow: none;
+    }
+
     .intro{
         border:none;
     }
 
-    .active{
-        border:none;
-    }
     
     .active{
         border:none;
+        outline: none;
     }
     .squares{
         grid-template-columns: repeat(3, 100px);
@@ -378,9 +416,14 @@ svg{
         font-size:1.5rem;
     }
 
+    
+
     .header{
         border-radius: 0;
+        text-shadow: none;
     }
+
+
 
     .players{
         width:300px;
@@ -390,6 +433,11 @@ svg{
 
     .players h4{
         font-size:0.65rem;
+        text-shadow:none
+    }
+
+    .winningscreen{
+        width:300px;
     }
 
     svg{
